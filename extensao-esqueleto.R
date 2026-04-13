@@ -66,11 +66,34 @@ write.csv(dados_sinasc_2, "dados_sinasc_2.csv", row.names=FALSE)
 # Tarefa 4. Verificar em dados_sinasc_2 a frequência das categorias das seguintes variáveis: LOCNASC, ESTCIVMAE, GESTACAO, GRAVIDEZ, PARTO,
 # SEXO, APGAR5, RACACOR, IDANOMAL, ESCMAE2010, RACACORMAE, TPAPRESENT, TPROBSON, PARIDADE, KOTELCHUCK
 
+for (col in c("LOCNASC", "ESTCIVMAE", "GESTACAO", "GRAVIDEZ", "PARTO", "SEXO",
+              "APGAR5", "RACACOR", "IDANOMAL", "ESCMAE2010", "RACACORMAE",
+              "TPAPRESENT", "TPROBSON", "PARIDADE", "KOTELCHUCK")) {
+  freq <- table(dados_sinasc_2[[col]], useNA="always")
+  cat(col)
+  print(freq)
+  cat("\n")
+  assign(paste0(col, "_f"), freq)
+}
 
 # Tarefa 5. Atribuir para cada variável de dados_sinasc_2 como sendo NA a categoria de "Não informado ou Ignorado", geralmente com código 9
 # KOTELCHUCK = 9 significa "não informado"   TPROBSON = 11 significa "não classificado por falta de informação"
 # veja o dicionário do SINASC para identificar qual o código das categorias de cada variável
 
+dados_sinasc_2 <- within(dados_sinasc_2, {
+  LOCNASC[LOCNASC==9] <- NA
+  ESTCIVMAE[ESTCIVMAE==9] <- NA
+  GESTACAO[GESTACAO==9] <- NA
+  GRAVIDEZ[GRAVIDEZ==9] <- NA
+  PARTO[PARTO==9] <- NA
+  SEXO[SEXO==0] <- NA
+  APGAR5[APGAR5==99] <- NA
+  IDANOMAL[IDANOMAL==9] <- NA
+  ESCMAE2010[ESCMAE2010==9] <- NA
+  TPAPRESENT[TPAPRESENT==9] <- NA
+  TPROBSON[TPROBSON==11] <- NA
+  KOTELCHUCK[KOTELCHUCK==9] <- NA
+})
 
 # Tarefa 6. Atribuir legendas para as categorias das variáveis investigadas na etapa 4.
 # Exemplo: dados_sinasc_2$KOTELCHUCK = factor(dados_sinasc_2$KOTELCHUCK, levels = c(1,2,3,4,5), 
