@@ -17,17 +17,35 @@
 # verificar se a leitura foi feita corretamente e a estrutura dos dados
 # nomeie o banco de dados como dados_sinasc
 
+dados_sinasc <- read.csv("dados/SINASC_2015.csv", header=TRUE, sep=";")
+cod_uf <- "41" # Paraná
+colunas_desejadas <- c("CONTADOR", "CODMUNNASC", "LOCNASC", "IDADEMAE",
+                       "ESTCIVMAE", "CODMUNRES", "GESTACAO", "GRAVIDEZ",
+                       "PARTO", "SEXO", "APGAR5", "RACACOR", "PESO", "IDANOMAL",
+                       "ESCMAE2010", "RACACORMAE", "SEMAGESTAC", "CONSPRENAT",
+                       "TPAPRESENT", "TPROBSON", "PARIDADE", "KOTELCHUCK")
+
+# verificando se os dados foram carregados corretamente
+stopifnot(nrow(dados_sinasc) == 3017668)
+stopifnot(ncol(dados_sinasc) == 61)
+stopifnot(
+  names(dados_sinasc)[c(1, 4, 5, 6, 7, 12, 13, 14, 15, 19, 21, 22, 23, 24, 35,
+                        38, 44, 46, 48, 59, 60, 61)] == colunas_desejadas
+)
 
 # Tarefa 2. Reduzir dados_sinasc apenas para as colunas que serão utilizadas, nomeando este novo banco de dados como dados_sinasc_1
 # as colunas serão 1, 4, 5, 6, 7, 12, 13, 14, 15, 19, 21, 22, 23, 24, 35, 38, 44, 46, 48, 59, 60, 61
 # nomes das respectivas variáveis: CONTADOR, CODMUNNASC, LOCNASC, IDADEMAE, ESTCIVMAE, CODMUNRES, GESTACAO, GRAVIDEZ, PARTO,
 # SEXO, APGAR5, RACACOR, PESO, IDANOMAL, ESCMAE2010, RACACORMAE, SEMAGESTAC, CONSPRENAT, TPAPRESENT, TPROBSON, PARIDADE, KOTELCHUCK
 
+dados_sinasc_1 <- dados_sinasc[,colunas_desejadas]
 
 # Tarefa 3. Reduzir dados_sinasc_1 apenas para o estado que o aluno irá trabalhar (utilizar os dois primeiros dígitos de CODMUNRES), nomeando este novo banco de dados como dados_sinasc_2
 # Códigos das UF: 11: RO, 12: AC, 13: AM, 14: RR, 15: PA, 16: AP, 17: TO, 21: MA, 22: PI, 23: CE, 24: RN
 # 25: PB, 26: PE, 27: AL, 28: SE, 29: BA, 31: MG, 32: ES, 33: RJ, 35: SP, 41: PR, 42: SC, 43: RS
 # 50: MS, 51: MT, 52: GO, 53: DF 
+
+dados_sinasc_2 <- dados_sinasc_1[substr(dados_sinasc_1$CODMUNRES, 1, 2)==cod_uf,]
 
 # observar abaixo o número de nascimentos por UF de residência para certificar-se que seu banco de dados está correto
 # 11: 27918     12: 16980     13: 80097     14: 11409     15: 143657    16: 15750      17: 25110
@@ -36,8 +54,11 @@
 # 41: 160947    42: 97223     43: 148359
 # 50: 44142     51: 56673     52: 100672    53: 46122 
 
+stopifnot(nrow(dados_sinasc_2)==160947)
+
 # Exportar o arquivo com o nome dados_sinasc_2.csv
 
+write.csv(dados_sinasc_2, "dados_sinasc_2.csv", row.names=FALSE)
 
 # Ao concluir a Tarefa 3 da Etapa 1 commite e envie para o repositório REMOTO o script e dados_sinasc_2.csv com o comentário "Dados do estado UF (coloque o nome da UF) e script de sua obtenção"
 
