@@ -101,6 +101,56 @@ dados_sinasc_2 <- within(dados_sinasc_2, {
 # labels = c("Não realizou pré-natal", "Inadequado", "Intermediário", "Adequado",  
 # "Mais que adequado")
 
+dados_sinasc_2 <- within(dados_sinasc_2, {
+  LOCNASC <- factor(LOCNASC, 1:5, c("Hospital",
+                                    "Outros estabelecimentos de saúde",
+                                    "Domicílio",
+                                    "Outros",
+                                    "Aldeia Indígena"))
+  ESTCIVMAE <- factor(ESTCIVMAE, 1:5, c("Solteira",
+                                        "Casada",
+                                        "Viúva",
+                                        "Separada judicialmente/divorciada",
+                                        "União estável"))
+  GESTACAO <- factor(GESTACAO, 1:6, c("Menos de 22 semanas",
+                                      "22 a 27 semanas",
+                                      "28 a 31 semanas",
+                                      "32 a 36 semanas",
+                                      "37 a 41 semanas",
+                                      "42 semanas e mais"))
+  GRAVIDEZ <- factor(GRAVIDEZ, 1:3, c("Única",
+                                      "Dupla",
+                                      "Tripla ou mais"))
+  PARTO <- factor(PARTO, 1:2, c("Vaginal", "Cesário"))
+  SEXO <- factor(SEXO, 1:2, c("Masculino", "Feminino"))
+  RACACOR <- factor(RACACOR, 1:5, c("Branca",
+                                    "Preta",
+                                    "Amarela",
+                                    "Parda",
+                                    "Indígena"))
+  IDANOMAL <- factor(IDANOMAL, 1:2, c("Sim", "Não"))
+  ESCMAE2010 <- factor(ESCMAE2010, 0:5, c("Sem escolaridade",
+                                          "Fundamental I",
+                                          "Fundamental II",
+                                          "Médio",
+                                          "Superior incompleto",
+                                          "Superior completo"))
+  RACACORMAE <- factor(RACACORMAE, 1:5, c("Branca",
+                                          "Preta",
+                                          "Amarela",
+                                          "Parda",
+                                          "Indígena"))
+  TPAPRESENT <- factor(TPAPRESENT, 1:3, c("Cefálico",
+                                          "Pélvica ou podálica",
+                                          "Transversa"))
+  PARIDADE <- factor(PARIDADE, 0:1, c("Nulípara", "Multípara"))
+  KOTELCHUCK <- factor(KOTELCHUCK, 1:5, c("Não realizou pré-natal",
+                                          "Inadequado",
+                                          "Intermediário",
+                                          "Adequado",
+                                          "Mais que adequado"))
+})
+
 # ATENçÃO: 1. Na hora de escrever os labels, somente a primeira letra da palavra é maiúscula. Exemplo para SEXO: Feminino e Masculino
 #          2. Nesta Tarefa 6 não crie novas variáveis no banco de dados
 
@@ -112,6 +162,18 @@ dados_sinasc_2 <- within(dados_sinasc_2, {
 # Atenção para casos de NA em IDADEMAE, PESO e APGAR5
 # Ao categorizar as variáveis, garantir que sejam transformadas em tipo fator
 
+dados_sinasc_2 <- within(dados_sinasc_2, {
+  F_PESO <- cut(PESO,
+                c(0, 2500, 4000, max(PESO, na.rm=TRUE)),
+                c("Baixo peso", "Peso normal", "Macrossomia"),
+                right=FALSE, include.lowest=TRUE)
+  F_IDADE <- cut(IDADEMAE,
+                 c(0, 5*(3:10), max(IDADEMAE, na.rm=TRUE)),
+                 c("<15", paste0(5*(3:9), "-", 5*(3:9)+4), "50+"),
+                 right=FALSE, include.lowest=TRUE)
+  F_APGAR5 <- cut(APGAR5, c(0, 7, 10), c("Baixo", "Normal"), right=FALSE,
+                  include.lowest=TRUE)
+})
 
 # Tarefa 8. Agregar ao banco de dados_sinasc_2 as informações PESO_P10 e PESO_P90 a partir de Tabela_PIG_Brasil.csv
 # a Tabela PIG informa P10 e P90 dos pesos, de acordo com a idade gestacional
