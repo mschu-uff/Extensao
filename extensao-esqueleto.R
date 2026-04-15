@@ -94,6 +94,7 @@ dados_sinasc_2 <- within(dados_sinasc_2, {
   TPAPRESENT[TPAPRESENT==9] <- NA
   TPROBSON[TPROBSON==11] <- NA
   KOTELCHUCK[KOTELCHUCK==9] <- NA
+  IDADEMAE[IDADEMAE==99] <- NA
 })
 
 # Tarefa 6. Atribuir legendas para as categorias das variáveis investigadas na etapa 4.
