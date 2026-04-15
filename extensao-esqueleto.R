@@ -59,6 +59,7 @@ stopifnot(nrow(dados_sinasc_2)==160947)
 # Exportar o arquivo com o nome dados_sinasc_2.csv
 
 write.csv(dados_sinasc_2, "dados_sinasc_2.csv", row.names=FALSE)
+dados_sinasc_2 <- read.csv("dados_sinasc_2.csv")
 
 # Ao concluir a Tarefa 3 da Etapa 1 commite e envie para o repositório REMOTO o script e dados_sinasc_2.csv com o comentário "Dados do estado UF (coloque o nome da UF) e script de sua obtenção"
 
