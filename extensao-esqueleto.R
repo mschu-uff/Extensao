@@ -150,6 +150,7 @@ dados_sinasc_2 <- within(dados_sinasc_2, {
                                           "Intermediário",
                                           "Adequado",
                                           "Mais que adequado"))
+  TPROBSON <- factor(TPROBSON, 1:10, paste0("Grupo ", 1:10))
 })
 
 # ATENçÃO: 1. Na hora de escrever os labels, somente a primeira letra da palavra é maiúscula. Exemplo para SEXO: Feminino e Masculino
