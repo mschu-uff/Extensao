@@ -177,6 +177,8 @@ dados_sinasc_2 <- within(dados_sinasc_2, {
                   include.lowest=TRUE)
 })
 
+# Script - tarefas 1 a 7 - ETAPA 1
+
 # Tarefa 8. Agregar ao banco de dados_sinasc_2 as informações PESO_P10 e PESO_P90 a partir de Tabela_PIG_Brasil.csv
 # a Tabela PIG informa P10 e P90 dos pesos, de acordo com a idade gestacional
 # criar nova variável referente ao peso, de acordo com a idade gestacional, conforme indicado abaixo
