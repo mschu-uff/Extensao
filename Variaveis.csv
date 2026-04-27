@@ -1,0 +1,104 @@
+Coluna,Variável,Descrição
+1,ANO,ano de referência (para os alunos de 2026/1 será 2015)
+2,NIVEL,nível da informação: UF ou MUNICIPIO
+3,CODMUNRES,Código da UF ou do município segundo IBGE
+4,TN,total de nascimentos
+5,TNRC,total de nascimentos com registros completos (sem qualquer NA) nas 61 variáveis do SINASC
+6,TNRCR,total de nascimentos com registros completos (sem qualquer NA) nas 22 variáveis selecionadas do SINASC
+7,TGI_15,total de gestantes com idade inferior a 15 anos
+8,TGI_15_19,total de gestantes com idade >=15 e <=19 anos
+9,TGI_20_24,total de gestantes com idade >=20 e <=24 anos
+10,TGI_25_29,total de gestantes com idade >=25 e <=29 anos
+11,TGI_30_34,total de gestantes com idade >=30 e <=34 anos
+12,TGI_35_39,total de gestantes com idade >=35 e <=39 anos
+13,TGI_40_44,total de gestantes com idade >=40 e <=44 anos
+14,TGI_45_49,total de gestantes com idade >=45 e <=49 anos
+15,TGI_50,total de gestantes com idade >=50
+16,TGIF,"total de gestantes em idade fértil, ou seja, idade >=15 e <=49 anos"
+17,IM_P25,percentil 25 da idade materna
+18,IM_P50,percentil 50 da idade materna
+19,IM_P75,percentil 75 da idade materna
+20,IM_MD,idade média materna
+21,IM_DP,desvio-padrão da idade materna
+22,EM_S,total de gestantes sem escolaridade
+23,EM_FI,total de gestantes com escolaridade fundamental I
+24,EM_FII,total de gestantes com escolaridade fundamental II
+25,EM_M,total de gestantes com escolaridade médio
+26,EM_SI,total de gestantes com escolaridade superior incompleto
+27,EM_SC,total de gestantes com escolaridade superior completo
+28,TGRC_B,total de gestantes da raça/cor branca
+29,TGRC_PT,total de gestantes da raça/cor preta
+30,TGRC_A,total de gestantes da raça/cor amarela
+31,TGRC_PD,total de gestantes da raça/cor parda
+32,TGRC_I,total de gestantes da raça/cor indígena
+33,TGSC,total de gestantes sem companheiro
+34,TGCC,total de gestantes com companheiro
+35,TGPRI,total de gestantes primíparas
+36,TGNPRI,total de gestantes não primíparas
+37,TGU,total de gestações únicas
+38,TGG,total de gestações gemelares
+39,TGD_22,total de gestações com duração inferior a 22 semanas
+40,TGD_22_27,total de gestações com duração >=22 e <=27
+41,TGD_28_31,total de gestações com duração >=28 e <=31
+42,TGD_32_36,total de gestações com duração >=32 e <=36
+43,TGD_37_41,total de gestações com duração >=37 e <=41
+44,TGD_42,total de gestações com duração >=42
+45,TGD_PRT,"total de gestações pré-termo, duração < 37 semanas"
+46,TGD_AT,"total de gestações a termo, duração >=37 e <=41"
+47,TGD_PST,"total de gestações pós termo, duração >=42"
+48,DG_P25,percentil 25 da duração da gestação
+49,DG_P50,percentil 50 da duração da gestação
+50,DG_P75,percentil 75 da duração da gestação
+51,DG_MD,duração média da gestação
+52,DG_DP,desvio-padrão da duração da gestação
+53,TKC_NR,total de consultas de pre-natal não realizado
+54,TKC_ID,total de consultas de pre-natal inadequado
+55,TKC_IT,total de consultas de pre-natal intermediário
+56,TKC_AD,total de consultas de pre-natal adequado
+57,TKC_MAD,total de consultas de pre-natal mais que adequado
+58,TGPRG_S,total de gestantes que peregrinaram
+59,TGPRG_N,total de gestantes que não peregrinaram
+60,TPV,total de partos vaginais
+61,TPC,total de partos cesáreos
+62,TRAP_C,total de recém-nascidos na posição cefálica
+63,TRAP_P,total de recém-nascidos na posição pélvica ou podálica
+64,TRAP_T,total de recém-nascidos na posição transversa
+65,TGROB_1,total de gestantes do grupo de Robson 1
+66,TGROB_2,total de gestantes do grupo de Robson 2
+67,TGROB_3,total de gestantes do grupo de Robson 3
+68,TGROB_4,total de gestantes do grupo de Robson 4
+69,TGROB_5,total de gestantes do grupo de Robson 5
+70,TGROB_6,total de gestantes do grupo de Robson 6
+71,TGROB_7,total de gestantes do grupo de Robson 7
+72,TGROB_8,total de gestantes do grupo de Robson 8
+73,TGROB_9,total de gestantes do grupo de Robson 9
+74,TGROB_10,total de gestantes do grupo de Robson 10
+75,TNLOC_H,total de nascimentos em hospital
+76,TNLOC_ES,total de nascimentos em outros estabelecimentos de saúde
+77,TNLOC_D,total de nascimentos em domicílio
+78,TNLOC_O,total de nascimentos em outros locais
+79,TNLOC_AI,total de nascimentos em aldeias indígenas
+80,TRS_M,total de recém-nascidos do sexo masculino
+81,TRS_F,total de recém-nascidos do sexo feminino
+82,TRRC_B,total de recém-nascidos da raça/cor branca
+83,TRRC_PT,total de recém-nascidos da raça/cor preta
+84,TRRC_A,total de recém-nascidos da raça/cor amarela
+85,TRRC_PD,total de recém-nascidos da raça/cor parda
+86,TRRC_I,total de recém-nascidos da raça/cor indígena
+87,TRP_BP,"total de recém-nascidos com baixo peso, peso < 2500"
+88,TRP_N,"total de recém-nascidos com peso normal, peso >= 2500 e < 4000"
+89,TRP_M,"total de recém-nascidos com macrossomia, peso >= 4000"
+90,PESO_P25,percentil 25 do peso dos recém-nascidos
+91,PESO_P50,percentil 50 do peso dos recém-nascidos
+92,PESO_P75,percentil 75 do peso dos recém-nascidos
+93,PESO_MD,peso médio dos recém-nascidos
+94,PESO_DP,desvio-padrão dos pesos dos recém-nascidos
+95,TRPIG_P,total de recém-nascidos de GESTAÇÕES ÚNICAS com PIG
+96,TRPIG_A,total de recém-nascidos de GESTAÇÕES ÚNICAS com AIG
+97,TRPIG_G,total de recém-nascidos de GESTAÇÕES ÚNICAS com GIG
+98,TRAPG5_B,"total de recém-nascidos com Apgar5 baixo, < 7"
+99,TRAPG5_N,"total de recém-nascidos com Apgar5 normal, >= 7"
+100,APG5_MD,Apgar5 médio dos recém-nascidos
+101,APG5_DP,desvio-padrão dos Apgar5 dos recém-nascidos
+102,TRAC,total de recém-nascidos com anomalia congênita
+103,TRSAC,total de recém-nascidos sem anomalia congênita

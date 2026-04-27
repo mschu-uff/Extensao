@@ -222,6 +222,17 @@ dados_sinasc_2$F_PIG[dados_sinasc_2$GRAVIDEZ!="Única"] <- NA
 # As variáveis devem ser construídas a partir dos microdados do SINASC,
 # respeitando os nomes e a ordem especificados.
 
+sinasc_pr <- data.frame(do.call(rbind, by(
+  dados_sinasc_2,
+  dados_sinasc_2$CODMUNRES,
+  function(df) {
+    c(
+      PESO_MD = mean(df$PESO, na.rm=TRUE),
+      PESO_DP = sd(df$PESO, na.rm=TRUE)
+    )
+  })))
+sinasc_pr$CODMUNRES <- rownames(sinasc_pr)
+rownames(sinasc_pr) <- NULL
 
 # Tarefa 11: Exporte o banco de dados com o nome SINASC_UF.csv
 
