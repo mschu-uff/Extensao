@@ -193,6 +193,21 @@ dados_sinasc_2 <- within(dados_sinasc_2, {
 # nova variável apenas para casos de GRAVIDEZ única: dados_sinasc_2$F_PIG: PIG: PESO < PESO_P10, AIG: PESO_P10 <= PESO <= PESO_P90, GIG: PESO > PESO_P90
 # Atenção para casos de NA em SEMAGESTAC, PESO ou SEXO. Lembre-se também que em dados_sinasc_2 SEXO está como fator com as categorias Feminino e Masculino.
 
+tabela_pig <- read.csv("Tabela_PIG_Brasil.csv", sep=";", header=TRUE)
+tabela_pig$SEXO <- factor(tabela_pig$SEXO)
+
+# Verificando que a variável CONTADOR pode ser usada para ordenar o resultado
+stopifnot(dados_sinasc_2$CONTADOR == 1:nrow(dados_sinasc_2))
+
+aux <- merge(dados_sinasc_2[,c("CONTADOR", "SEMAGESTAC", "PESO", "SEXO")],
+             tabela_pig, all.x=TRUE)
+aux <- aux[order(aux$CONTADOR),]
+rownames(aux) <- aux$CONTADOR
+dados_sinasc_2$F_PIG <- with(
+  aux,
+  factor(c("GIG", "AIG", "PIG"))[(PESO<PESO_P10) + (PESO<PESO_P90) + 1]
+)
+dados_sinasc_2$F_PIG[dados_sinasc_2$GRAVIDEZ!="Única"] <- NA
 
 # Tarefa 9. Obter as frequências das categorias das variáveis e medidas descritivas de variáveis e salvar os resultados em novas variáveis.
 # Exemplo: freq_SEXO = table(dados_sinasc_2$SEXO)   media_peso = mean(dados_sinasc_2$PESO)
