@@ -81,6 +81,7 @@ for (col in c("LOCNASC", "ESTCIVMAE", "GESTACAO", "GRAVIDEZ", "PARTO", "SEXO",
 # KOTELCHUCK = 9 significa "não informado"   TPROBSON = 11 significa "não classificado por falta de informação"
 # veja o dicionário do SINASC para identificar qual o código das categorias de cada variável
 
+summary(dados_sinasc_2)
 dados_sinasc_2 <- within(dados_sinasc_2, {
   LOCNASC[LOCNASC==9] <- NA
   ESTCIVMAE[ESTCIVMAE==9] <- NA
@@ -95,7 +96,9 @@ dados_sinasc_2 <- within(dados_sinasc_2, {
   TPROBSON[TPROBSON==11] <- NA
   KOTELCHUCK[KOTELCHUCK==9] <- NA
   IDADEMAE[IDADEMAE==99] <- NA
+  CONSPRENAT[CONSPRENAT==99] <- NA
 })
+summary(dados_sinasc_2)
 
 # Tarefa 6. Atribuir legendas para as categorias das variáveis investigadas na etapa 4.
 # Exemplo: dados_sinasc_2$KOTELCHUCK = factor(dados_sinasc_2$KOTELCHUCK, levels = c(1,2,3,4,5), 
@@ -163,6 +166,8 @@ dados_sinasc_2 <- within(dados_sinasc_2, {
 # nova variável dados_sinasc_2$F_APGAR5 com APGAR5: < 7: Baixo, >= 7: Normal
 # Atenção para casos de NA em IDADEMAE, PESO e APGAR5
 # Ao categorizar as variáveis, garantir que sejam transformadas em tipo fator
+# criar nova variável referente ao deslocamento materno para realizar o parto, chamado de peregrinação
+# nova variável: dados_sinasc_2$PERIG: Não: CODMUNNASC igual a CODMUNRES, Sim: CODMUNNASC diferente de CODMUNRES
 
 dados_sinasc_2 <- within(dados_sinasc_2, {
   F_PESO <- cut(PESO,
@@ -175,6 +180,9 @@ dados_sinasc_2 <- within(dados_sinasc_2, {
                  right=FALSE, include.lowest=TRUE)
   F_APGAR5 <- cut(APGAR5, c(0, 7, 10), c("Baixo", "Normal"), right=FALSE,
                   include.lowest=TRUE)
+  PERIG <- factor(ifelse(CODMUNNASC == CODMUNRES, "Não", "Sim"))
+  ESTCIV <- factor(c(1, 2, 1, 1, 2), 1:2,
+                   c("Sem companheiro", "Com companheiro"))[ESTCIVMAE]
 })
 
 # Script - tarefas 1 a 7 - ETAPA 1
@@ -184,9 +192,6 @@ dados_sinasc_2 <- within(dados_sinasc_2, {
 # criar nova variável referente ao peso, de acordo com a idade gestacional, conforme indicado abaixo
 # nova variável apenas para casos de GRAVIDEZ única: dados_sinasc_2$F_PIG: PIG: PESO < PESO_P10, AIG: PESO_P10 <= PESO <= PESO_P90, GIG: PESO > PESO_P90
 # Atenção para casos de NA em SEMAGESTAC, PESO ou SEXO. Lembre-se também que em dados_sinasc_2 SEXO está como fator com as categorias Feminino e Masculino.
-
-# criar nova variável referente ao deslocamento materno para realizar o parto, chamado de peregrinação
-# nova variável: dados_sinasc_2$PERIG: Não: CODMUNNASC igual a CODMUNRES, Sim: CODMUNNASC diferente de CODMUNRES
 
 
 # Tarefa 9. Obter as frequências das categorias das variáveis e medidas descritivas de variáveis e salvar os resultados em novas variáveis.
