@@ -222,21 +222,134 @@ dados_sinasc_2$F_PIG[dados_sinasc_2$GRAVIDEZ!="Única"] <- NA
 # As variáveis devem ser construídas a partir dos microdados do SINASC,
 # respeitando os nomes e a ordem especificados.
 
-sinasc_pr <- data.frame(do.call(rbind, by(
+obs.completas <- tapply(complete.cases(dados_sinasc), dados_sinasc$CODMUNRES, sum)
+sinasc_pr <- do.call(rbind, by(
   dados_sinasc_2,
   dados_sinasc_2$CODMUNRES,
-  function(df) {
-    c(
+  analise <- function(df) {
+    data.frame(
+      ANO = 2015,
+      NIVEL = "MUNICIPIO",
+      TN = nrow(df),
+      TNRCR = sum(complete.cases(df)),
+      TGI_15 = sum(df$F_IDADE == "<15", na.rm=TRUE),
+      TGI_15_19 = sum(df$F_IDADE == "15-19", na.rm=TRUE),
+      TGI_20_24 = sum(df$F_IDADE == "20-24", na.rm=TRUE),
+      TGI_25_29 = sum(df$F_IDADE == "25-29", na.rm=TRUE),
+      TGI_30_34 = sum(df$F_IDADE == "30-34", na.rm=TRUE),
+      TGI_35_39 = sum(df$F_IDADE == "35-39", na.rm=TRUE),
+      TGI_40_44 = sum(df$F_IDADE == "40-44", na.rm=TRUE),
+      TGI_45_49 = sum(df$F_IDADE == "45-49", na.rm=TRUE),
+      TGI_50 = sum(df$F_IDADE == "50+", na.rm=TRUE),
+      TGIF = sum(df$IDADEMAE >= 15 & df$IDADEMAE <= 49, na.rm=TRUE),
+      IM_P25 = quantile(df$IDADEMAE, 0.25, na.rm=TRUE, names=FALSE),
+      IM_P50 = quantile(df$IDADEMAE, 0.5, na.rm=TRUE, names=FALSE),
+      IM_P75 = quantile(df$IDADEMAE, 0.75, na.rm=TRUE, names=FALSE),
+      IM_MD = mean(df$IDADEMAE, na.rm=TRUE),
+      IM_DP = sd(df$IDADEMAE, na.rm=TRUE),
+      EM_S = sum(df$ESCMAE2010 == "Sem escolaridade", na.rm=TRUE),
+      EM_FI = sum(df$ESCMAE2010 == "Fundamental I", na.rm=TRUE),
+      EM_FII = sum(df$ESCMAE2010 == "Fundamental II", na.rm=TRUE),
+      EM_M = sum(df$ESCMAE2010 == "Médio", na.rm=TRUE),
+      EM_SI = sum(df$ESCMAE2010 == "Superior incompleto", na.rm=TRUE),
+      EM_SC = sum(df$ESCMAE2010 == "Superior completo", na.rm=TRUE),
+      TGRC_B = sum(df$RACACORMAE == "Branca", na.rm=TRUE),
+      TGRC_PT = sum(df$RACACORMAE == "Preta", na.rm=TRUE),
+      TGRC_A = sum(df$RACACORMAE == "Amarela", na.rm=TRUE),
+      TGRC_PD = sum(df$RACACORMAE == "Parda", na.rm=TRUE),
+      TGRC_I = sum(df$RACACORMAE == "Indígena", na.rm=TRUE),
+      TGSC = sum(df$ESTCIV == "Sem companheiro", na.rm=TRUE),
+      TGCC = sum(df$ESTCIV == "Com companheiro", na.rm=TRUE),
+      TGPRI = sum(df$PARIDADE == "Nulípara", na.rm=TRUE),
+      TGNPRI = sum(df$PARIDADE == "Multípara", na.rm=TRUE),
+      TGU = sum(df$GRAVIDEZ == "Única", na.rm=TRUE),
+      TGG = sum(df$GRAVIDEZ %in% c("Dupla", "Tripla ou mais"), na.rm=TRUE),
+      TGD_22 = sum(df$SEMAGESTAC < 22, na.rm=TRUE),
+      TGD_22_27 = sum(df$SEMAGESTAC >= 22 & df$SEMAGESTAC <= 27, na.rm=TRUE),
+      TGD_28_31 = sum(df$SEMAGESTAC >= 28 & df$SEMAGESTAC <= 31, na.rm=TRUE),
+      TGD_32_36 = sum(df$SEMAGESTAC >= 32 & df$SEMAGESTAC <= 36, na.rm=TRUE),
+      TGD_37_41 = sum(df$SEMAGESTAC >= 37 & df$SEMAGESTAC <= 41, na.rm=TRUE),
+      TGD_42 = sum(df$SEMAGESTAC >= 42, na.rm=TRUE),
+      TGD_PRT = sum(df$SEMAGESTAC < 37, na.rm=TRUE),
+      TGD_AT = sum(df$SEMAGESTAC >= 37 & df$SEMAGESTAC <= 41, na.rm=TRUE),
+      TGD_PST = sum(df$SEMAGESTAC >= 42, na.rm=TRUE),
+      DG_P25 = quantile(df$SEMAGESTAC, 0.25, na.rm=TRUE, names=FALSE),
+      DG_P50 = quantile(df$SEMAGESTAC, 0.5, na.rm=TRUE, names=FALSE),
+      DG_P75 = quantile(df$SEMAGESTAC, 0.75, na.rm=TRUE, names=FALSE),
+      DG_MD = mean(df$SEMAGESTAC, na.rm=TRUE),
+      DG_DP = sd(df$SEMAGESTAC, na.rm=TRUE),
+      TKC_NR = sum(df$KOTELCHUCK == "Não realizou pré-natal", na.rm=TRUE),
+      TKC_ID = sum(df$KOTELCHUCK == "Inadequado", na.rm=TRUE),
+      TKC_IT = sum(df$KOTELCHUCK == "Intermediário", na.rm=TRUE),
+      TKC_AD = sum(df$KOTELCHUCK == "Adequado", na.rm=TRUE),
+      TKC_MAD = sum(df$KOTELCHUCK == "Mais que adequado", na.rm=TRUE),
+      TGPRG_S = sum(df$PERIG == "Sim", na.rm=TRUE),
+      TGPRG_N = sum(df$PERIG == "Não", na.rm=TRUE),
+      TPV = sum(df$PARTO == "Vaginal", na.rm=TRUE),
+      TPC = sum(df$PARTO == "Cesário", na.rm=TRUE),
+      TRAP_C = sum(df$TPAPRESENT == "Cefálico", na.rm=TRUE),
+      TRAP_P = sum(df$TPAPRESENT == "Pélvica ou podálica", na.rm=TRUE),
+      TRAP_T = sum(df$TPAPRESENT == "Transversa", na.rm=TRUE),
+      TGROB_1 = sum(df$TPROBSON == "Grupo 1", na.rm=TRUE),
+      TGROB_2 = sum(df$TPROBSON == "Grupo 2", na.rm=TRUE),
+      TGROB_3 = sum(df$TPROBSON == "Grupo 3", na.rm=TRUE),
+      TGROB_4 = sum(df$TPROBSON == "Grupo 4", na.rm=TRUE),
+      TGROB_5 = sum(df$TPROBSON == "Grupo 5", na.rm=TRUE),
+      TGROB_6 = sum(df$TPROBSON == "Grupo 6", na.rm=TRUE),
+      TGROB_7 = sum(df$TPROBSON == "Grupo 7", na.rm=TRUE),
+      TGROB_8 = sum(df$TPROBSON == "Grupo 8", na.rm=TRUE),
+      TGROB_9 = sum(df$TPROBSON == "Grupo 9", na.rm=TRUE),
+      TGROB_10 = sum(df$TPROBSON == "Grupo 10", na.rm=TRUE),
+      TNLOC_H = sum(df$LOCNASC == "Hospital", na.rm=TRUE),
+      TNLOC_ES = sum(df$LOCNASC == "Outros estabelecimentos de saúde", na.rm=TRUE),
+      TNLOC_D = sum(df$LOCNASC == "Domicílio", na.rm=TRUE),
+      TNLOC_O = sum(df$LOCNASC == "Outros", na.rm=TRUE),
+      TNLOC_AI = sum(df$LOCNASC == "Aldeia Indígena", na.rm=TRUE),
+      TRS_M = sum(df$SEXO == "Masculino", na.rm=TRUE),
+      TRS_F = sum(df$SEXO == "Feminino", na.rm=TRUE),
+      TRRC_B = sum(df$RACACOR == "Branca", na.rm=TRUE),
+      TRRC_PT = sum(df$RACACOR == "Preta", na.rm=TRUE),
+      TRRC_A = sum(df$RACACOR == "Amarela", na.rm=TRUE),
+      TRRC_PD = sum(df$RACACOR == "Parda", na.rm=TRUE),
+      TRRC_I = sum(df$RACACOR == "Indígena", na.rm=TRUE),
+      TRP_BP = sum(df$PESO < 2500, na.rm=TRUE),
+      TRP_N = sum(df$PESO >= 2500 & df$PESO < 4000, na.rm=TRUE),
+      TRP_M = sum(df$PESO >= 4000, na.rm=TRUE),
+      PESO_P25 = quantile(df$PESO, 0.25, na.rm=TRUE, names=FALSE),
+      PESO_P50 = quantile(df$PESO, 0.5, na.rm=TRUE, names=FALSE),
+      PESO_P75 = quantile(df$PESO, 0.75, na.rm=TRUE, names=FALSE),
       PESO_MD = mean(df$PESO, na.rm=TRUE),
-      PESO_DP = sd(df$PESO, na.rm=TRUE)
+      PESO_DP = sd(df$PESO, na.rm=TRUE),
+      TRPIG_P = sum(df$F_PIG == "PIG", na.rm=TRUE),
+      TRPIG_A = sum(df$F_PIG == "AIG", na.rm=TRUE),
+      TRPIG_G = sum(df$F_PIG == "GIG", na.rm=TRUE),
+      TRAPG5_B = sum(df$APGAR5 < 7, na.rm=TRUE),
+      TRAPG5_N = sum(df$APGAR5 >= 7, na.rm=TRUE),
+      APG5_MD = mean(df$APGAR5, na.rm=TRUE),
+      APG5_DP = sd(df$APGAR5, na.rm=TRUE),
+      TRAC = sum(df$IDANOMAL == "Sim", na.rm=TRUE),
+      TRSAC = sum(df$IDANOMAL == "Não", na.rm=TRUE)
     )
-  })))
+  }))
 sinasc_pr$CODMUNRES <- rownames(sinasc_pr)
 rownames(sinasc_pr) <- NULL
+sinasc_pr$TNRC <- obs.completas[sinasc_pr$CODMUNRES]
+
+linha_estado <- analise(dados_sinasc_2)
+linha_estado$NIVEL <- "UF"
+linha_estado$CODMUNRES <- 41
+linha_estado$TNRC <- sum(sinasc_pr$TNRC)
+
+sinasc_pr <- rbind(linha_estado, sinasc_pr)
+
+variaveis <- read.csv("Variaveis.csv", header=TRUE, sep=",")
+sinasc_pr <- sinasc_pr[,variaveis$Variável]
+
+View(sinasc_pr)
 
 # Tarefa 11: Exporte o banco de dados com o nome SINASC_UF.csv
 
-
+write.csv(sinasc_pr, "SINASC_PR.csv", row.names=FALSE)
 
 # Ao terminar a ETAPA 1 commite e envie para o repositório REMOTO com o comentário "Dados da UF e Script Etapa 1"
 
