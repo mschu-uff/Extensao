@@ -617,12 +617,73 @@ write.csv(sim_pr, "SIM_PR.csv", row.names=FALSE)
 # 12 POPRC_F_15_49
 # 13 POPRC_F_50
 
+pop_idade_uf <- read.csv("população residente censo 2010 - por faixa etária - UF - SIDRA - tabela_1552.csv", header=TRUE, sep=";")
+pop_idade_sexo <- read.csv("população residente censo 2010 - por faixa etária e sexo - municípios - SIDRA - tabela_1552.csv", header=TRUE, sep=";")
+pop_sexo <- read.csv("população residente censo 2010 - UF e municípios - total e por sexo - SIDRA - tabela_1552.csv", header=TRUE, sep=";")
+pop_estimada_2015 <- read.csv("população residente estimada - UF e municípios - 2015 - SIDRA - tabela_6579.csv", header=TRUE, sep=";")
 
+IDADE_15 <- c("0 a 4 anos", "5 a 9 anos", "10 a 14 anos")
+IDADE_15_49 <- c("15 a 19 anos", "20 a 24 anos", "25 a 29 anos",
+                 "30 a 34 anos", "35 a 39 anos", "40 a 44 anos",
+                 "45 a 49 anos")
+IDADE_50 <- c("50 a 54 anos", "55 a 59 anos", "60 a 64 anos",
+              "65 a 69 anos", "70 a 74 anos", "75 a 79 anos",
+              "80 a 89 anos", "90 a 99 anos", "100 anos ou mais")
+
+pop_idade_sexo <- within(pop_idade_sexo, {
+  F_IDADE[F_IDADE %in% IDADE_15] <- "0 a 14 anos"
+  F_IDADE[F_IDADE %in% IDADE_15_49] <- "15 a 49 anos"
+  F_IDADE[F_IDADE %in% IDADE_50] <- "50 anos ou mais"
+})
+
+pop_idade_uf <- pop_idade_uf[-514,] # linha vazia
+pop_idade_uf <- within(pop_idade_uf, {
+  F_IDADE[F_IDADE %in% IDADE_15] <- "0 a 14 anos"
+  F_IDADE[F_IDADE %in% IDADE_15_49] <- "15 a 49 anos"
+  F_IDADE[F_IDADE %in% IDADE_50] <- "50 anos ou mais"
+  ESTADO <- NULL
+})
+
+pop_idade_sexo <- rbind(pop_idade_sexo, pop_idade_uf)
+
+pop_tot <- as.data.frame.matrix(xtabs(POP ~ (CODMUNRES + F_IDADE), pop_idade_sexo))
+names(pop_tot) <- c("POPRC_15", "POPRC_15_49", "POPRC_50")
+pop_tot$CODMUNRES <- rownames(pop_tot)
+rownames(pop_tot) <- NULL
+
+pop_fem <- as.data.frame.matrix(xtabs(POPF ~ (CODMUNRES + F_IDADE), pop_idade_sexo))
+names(pop_fem) <- c("POPRC_F_15", "POPRC_F_15_49", "POPRC_F_50")
+pop_fem$CODMUNRES <- rownames(pop_fem)
+rownames(pop_fem) <- NULL
+
+sidra_pr <- pop_estimada_2015
+sidra_pr <- merge(sidra_pr, pop_sexo, all.x=TRUE)
+sidra_pr <- merge(sidra_pr, pop_tot, all.x=TRUE)
+sidra_pr <- merge(sidra_pr, pop_fem, all.x=TRUE)
+
+sidra_pr$ANO <- 2015
+sidra_pr$NIVEL <- ifelse(nchar(sidra_pr$CODMUNRES)==2, "UF", "MUNICIPIO")
+
+sidra_pr <- sidra_pr[,c("ANO",    
+                        "NIVEL",
+                        "CODMUNRES",
+                        "POPRE_T",
+                        "POPRC_T",
+                        "POPRC_M",
+                        "POPRC_F",
+                        "POPRC_15",
+                        "POPRC_15_49",
+                        "POPRC_50",
+                        "POPRC_F_15",
+                        "POPRC_F_15_49",
+                        "POPRC_F_50")]
+
+sidra_pr <- sidra_pr[substr(sidra_pr$CODMUNRES, 1, 2)=="41",]
 
 # Exporte o arquivo em formato CSV
 # Faça o commit com a mensagem "Script e dados TAREFA 3 - SIDRA"
 
-
+write.csv(sidra_pr, "SIDRA_PR.csv", row.names=FALSE)
 
 #####################################################################################################
 # ETAPA 4: GERAR BANCO DE DADOS FINAL DO ESTADO, BASEADO NAS ANÁLISES DE SINASC, SIM, IBGE, SNIS,...
