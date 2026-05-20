@@ -694,9 +694,28 @@ write.csv(sidra_pr, "SIDRA_PR.csv", row.names=FALSE)
 # 4 POPR_RA
 # 5 POPR_RE
 
+sinisa_pr <- read.csv("agua e esgoto - município - 2015.csv", header=TRUE, sep=";")
+sinisa_pr <- sinisa_pr[sinisa_pr$Estado=="PR",]
+
+sinisa_pr$POPR_RA <- as.integer(gsub("\\.", "", sinisa_pr$POPR_RA))
+sinisa_pr$POPR_RE <- as.integer(gsub("\\.", "", sinisa_pr$POPR_RE))
+sinisa_pr$ANO <- 2015
+sinisa_pr$NIVEL <- "MUNICIPIO"
+
+sinisa_pr <- sinisa_pr[,c("ANO", "NIVEL", "CODMUNRES", "POPR_RA", "POPR_RE")]
+
+sinisa_pr <- rbind(data.frame(
+  ANO = 2015,
+  NIVEL = "UF",
+  CODMUNRES = 41,
+  POPR_RA = sum(sinisa_pr$POPR_RA, na.rm=TRUE),
+  POPR_RE = sum(sinisa_pr$POPR_RE, na.rm=TRUE)
+), sinisa_pr)
+
 # Exporte o arquivo em formato CSV
 # Faça o commit com a mensagem "Script e dados TAREFA 3 - SINISA"
 
+write.csv(sinisa_pr, "SINISA_PR.csv", row.names=FALSE)
 
 # Tarefa 3: Acesso aos bancos de dados do ATLAS  e obtenção da informação
 # Escreva os comandos da Tarefa 3 estando na branch OUTROS
