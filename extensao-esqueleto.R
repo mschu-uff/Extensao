@@ -732,8 +732,42 @@ write.csv(sinisa_pr, "SINISA_PR.csv", row.names=FALSE)
 # 6 IDHM_CA_M
 # 7 IDHM_CA_F
 
+cod_mun <- read.csv("códigos dos municípios - 2010.csv", header=TRUE, sep=";")[,1:2]
+idhm_mun <- read.csv("IDHM - 2010 - municípios - Atlas Brasil.csv", header=TRUE, sep=";")[,1:2]
+idhm_uf <- read.csv("IDHM - 2010 (CENSO) e 2015 (PNAD) - total e por sexo - UF - Atlas Brasil.csv", header=TRUE, sep=";")[,1:7]
+
+cod_mun <- cod_mun[substr(cod_mun$CODMUNRES, 1, 2)=="41",]
+
+idhm_mun <- idhm_mun[endsWith(idhm_mun$município, "PR)"),]
+idhm_mun$município <- substr(idhm_mun$município, 1,
+                             nchar(idhm_mun$município)-5)
+idhm_mun$NIVEL <- "MUNICIPIO"
+
+idhm_uf <- idhm_uf[idhm_uf$UF=="Paraná",
+                   c("IDHM_2010", "IDHM_2015",
+                     "IDHM_2010_M", "IDHM_2010_F")]
+idhm_uf$CODMUNRES <- "41"
+idhm_uf$NIVEL <- "UF"
+
+idhm_mun <- merge(idhm_mun, cod_mun, all.x=TRUE)
+idhm_mun <- idhm_mun[,c("CODMUNRES", "NIVEL", "IDHM_2010")]
+idhm_mun$IDHM_2015 <- NA
+idhm_mun$IDHM_2010_M <- NA
+idhm_mun$IDHM_2010_F <- NA
+
+atlas_pr <- rbind(idhm_uf, idhm_mun)
+atlas_pr$ANO <- 2015
+atlas_pr <- atlas_pr[,c("ANO", "NIVEL", "CODMUNRES",
+                        "IDHM_2015", "IDHM_2010",
+                        "IDHM_2010_M", "IDHM_2010_F")]
+names(atlas_pr) <- c("ANO", "NIVEL", "CODMUNRES",
+                     "IDHM_A", "IDHM_CA",
+                     "IDHM_CA_M", "IDHM_CA_F")
+
 # Exporte o arquivo em formato CSV
 # Faça o commit com a mensagem "Script e dados TAREFA 3 - ATLAS"
+
+write.csv(atlas_pr, "ATLAS_PR.csv", row.names=FALSE)
 
 #####################################################################################################
 # ETAPA 4: GERAR BANCO DE DADOS FINAL DO ESTADO, BASEADO NAS ANÁLISES DE SINASC, SIM, IBGE, SNIS,...
