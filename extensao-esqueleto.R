@@ -763,6 +763,10 @@ atlas_pr <- atlas_pr[,c("ANO", "NIVEL", "CODMUNRES",
 names(atlas_pr) <- c("ANO", "NIVEL", "CODMUNRES",
                      "IDHM_A", "IDHM_CA",
                      "IDHM_CA_M", "IDHM_CA_F")
+atlas_pr$IDHM_A <- as.numeric(sub(",", ".", atlas_pr$IDHM_A))
+atlas_pr$IDHM_CA <- as.numeric(sub(",", ".", atlas_pr$IDHM_CA))
+atlas_pr$IDHM_CA_M <- as.numeric(sub(",", ".", atlas_pr$IDHM_CA_M))
+atlas_pr$IDHM_CA_F <- as.numeric(sub(",", ".", atlas_pr$IDHM_CA_F))
 
 # Exporte o arquivo em formato CSV
 # Faça o commit com a mensagem "Script e dados TAREFA 3 - ATLAS"
