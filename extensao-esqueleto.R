@@ -826,6 +826,7 @@ BDEM_PR_2015 <- BDEM_PR_2015[order(BDEM_PR_2015$CODMUNRES),]
 
 # Exporte o arquivo em formato CSV# Faça o commit com a mensagem "Script e dados TAREFA 3 - ATLAS"
 
+write.csv(BDEM_PR_2015, "BDEM_PR_2015.csv", row.names=FALSE)
 
 ############################################################################################
 # ETAPA 5: EMPILHAMENTO DOS DATAFRAMES DE CADA ESTADO, GERANDO UM DATAFRAME DE 27 LINHAS
