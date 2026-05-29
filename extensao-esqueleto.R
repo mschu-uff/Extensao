@@ -808,6 +808,20 @@ DA_PR <- merge(DA_PR, SINISA_PR, all=TRUE)
 
 # Tarefa 2: Acrescentar no banco DA_UF os indicadores TFG, TMG, RMM, TMM, TMM_P, TMN, TMN_P, TMN_T e TMI e chamar o banco de BDEM_UF_2015
 
+BDEM_PR_2015 <- within(DA_PR, {
+  TFG <- (TN / POPRC_F_15_49) * 1000
+  TMG <- (TO / POPRE_T) * 1000
+  RMM <- (TO_MT / TN) * 100000
+  TMM <- (TO_MT / POPRC_F_15_49) * 100000
+  TMM_P <- (TO_MT_P / POPRC_F_15_49) * 100000
+  TMN <- (TO_NT / TN) * 1000
+  TMN_P <- (TO_NT_P / TN) * 1000
+  TMN_T <- (TO_NT_T / TN) * 1000
+  TMI <- ((TO_NT + TO_PNT) / TN) * 1000
+})
+
+BDEM_PR_2015 <- BDEM_PR_2015[order(BDEM_PR_2015$CODMUNRES),]
+
 # Após a criação do banco, fazer commit “Script e dados BDEM_UF_2015”
 
 # Exporte o arquivo em formato CSV# Faça o commit com a mensagem "Script e dados TAREFA 3 - ATLAS"
