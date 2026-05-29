@@ -781,6 +781,25 @@ write.csv(atlas_pr, "ATLAS_PR.csv", row.names=FALSE)
 # Tarefa 1: Fazer o merge dos bancos de dados criados nas etapas anteriores (SIDRA_UF, ATLAS_ UF,  SINASC_UF, SIM_UF e SINISA_UF), 
 # sendo que as variáveis deverão seguir a ordem
 
+SIDRA_PR <- read.csv("SIDRA_PR.csv", header=TRUE, sep=",")
+ATLAS_PR <- read.csv("ATLAS_PR.csv", header=TRUE, sep=",")
+SINASC_PR <- read.csv("SINASC_PR.csv", header=TRUE, sep=",")
+SIM_PR <- read.csv("SIM_PR.csv", header=TRUE, sep=",")
+SINISA_PR <- read.csv("SINISA_PR.csv", header=TRUE, sep=",")
+
+codmun_6_7 <- SIDRA_PR$CODMUNRES
+names(codmun_6_7) <- substr(SIDRA_PR$CODMUNRES, 1, 6)
+codmun_6_7["410000"] <- 410000
+
+SINASC_PR$CODMUNRES <- codmun_6_7[as.character(SINASC_PR$CODMUNRES)]
+SIM_PR$CODMUNRES <- codmun_6_7[as.character(SIM_PR$CODMUNRES)]
+SINISA_PR$CODMUNRES <- codmun_6_7[as.character(SINISA_PR$CODMUNRES)]
+
+DA_PR <- merge(SIDRA_PR, ATLAS_PR, all=TRUE)
+DA_PR <- merge(DA_PR, SINASC_PR, all=TRUE)
+DA_PR <- merge(DA_PR, SIM_PR, all=TRUE)
+DA_PR <- merge(DA_PR, SINISA_PR, all=TRUE)
+
 # ANO, NIVEL, CODMUNRES (uma única vez), variáveis do SIDRA, do ATLAS, do SINASC, do SIM e da SINISA. No merge deve constar qualquer município que esteja em pelo menos um dos bancos
 # Chamar o banco de dados de DA_UF
 
